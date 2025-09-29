@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "workspaces": [
-"packages/*"
-],
-"scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "packages/*"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "cd packages/react-frontend && npm run dev"
   },
   "author": "",
   "license": "ISC",
   "description": ""
- } 
+}
