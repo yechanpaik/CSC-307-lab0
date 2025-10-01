@@ -48,6 +48,15 @@ const addUser = (user) => {
   return user;
 };
 
+const deleteUser = (id) => {
+  const index = users.users_list.findIndex((user) => user.id === id);
+  if (index === -1) {
+    return null;
+  }
+  const deletedUser = users.users_list.splice(index, 1);
+  return deletedUser[0];
+};
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
@@ -67,6 +76,15 @@ app.post("/users", (req, res) => {
   const userToAdd = req.body;
   addUser(userToAdd);
   res.send();
+});
+
+app.delete("/users", (req, res) => {
+  const userToDelete = req.body.id;
+  const deleted = deleteUser(userToDelete);
+  if (deleted === -1) {
+    return res.status(404).send({ message: "User not found" });
+  }
+  return res.status(200).send({ message: "User deleted" });
 });
 
 app.get("/users/:id", (req, res) => {
