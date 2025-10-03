@@ -1,9 +1,11 @@
 // backend.js
 import express from "express";
+import cors from "cors";
 
 const app = express();
 const port = 8000;
 
+app.use(cors());
 app.use(express.json());
 
 const users = {
@@ -57,6 +59,12 @@ const deleteUser = (id) => {
   return deletedUser[0];
 };
 
+const generateId = (userToAdd) => {
+  const id = Math.floor(Math.random() * 999);
+  userToAdd.id = userToAdd.name.substring(0, 3) + id;
+  return userToAdd.id;
+};
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
@@ -74,17 +82,25 @@ app.get("/users", (req, res) => {
 
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
-  addUser(userToAdd);
-  res.send();
+  userToAdd.id = generateId(userToAdd);
+
+  if (addUser(userToAdd)) {
+    console.log(userToAdd);
+    return res
+      .status(201)
+      .send({ user: userToAdd, message: "User successfully created" });
+  } else {
+    return res.status(400).send({ message: "Creation uncessful" });
+  }
 });
 
 app.delete("/users", (req, res) => {
   const userToDelete = req.body.id;
   const deleted = deleteUser(userToDelete);
-  if (deleted === -1) {
+  if (deleted === null) {
     return res.status(404).send({ message: "User not found" });
   }
-  return res.status(200).send({ message: "User deleted" });
+  return res.status(200).send({ user: deleted, message: "User deleted" });
 });
 
 app.get("/users/:id", (req, res) => {
