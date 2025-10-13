@@ -89,6 +89,10 @@ app.delete("/users", (req, res) => {
     .catch((err) => res.send(400).send({ message: err.message }));
 });
 
+app.delete("/users/:id", (req, res) => {
+  const id = req.params["id"];
+});
+
 app.get("/users/:id", (req, res) => {
   const id = req.params["id"]; //or req.params.id
   findUserById(id)

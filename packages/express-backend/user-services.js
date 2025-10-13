@@ -44,6 +44,11 @@ function findUserByNameAndJob(name, job) {
   return userModel.find({ name: name, job: job });
 }
 
+function deleteUser(id) {
+  const promise = userModel.findByIdAndDelete(id);
+  return promise;
+}
+
 export default {
   addUser,
   getUsers,
@@ -51,4 +56,5 @@ export default {
   findUserByName,
   findUserByJob,
   findUserByNameAndJob,
+  deleteUser,
 };
