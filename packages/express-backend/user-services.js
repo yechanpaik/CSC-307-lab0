@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import userModel from "./user";
+import userModel from "./user.js";
 
 mongoose.set("debug", true);
 
@@ -8,6 +8,7 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
+  .then(() => console.log("Connected!"))
   .catch((error) => console.log(error));
 
 function getUsers(name, job) {
@@ -44,6 +45,11 @@ function findUserByNameAndJob(name, job) {
   return userModel.find({ name: name, job: job });
 }
 
+function deleteUser(id) {
+  const promise = userModel.findByIdAndDelete(id);
+  return promise;
+}
+
 export default {
   addUser,
   getUsers,
@@ -51,4 +57,5 @@ export default {
   findUserByName,
   findUserByJob,
   findUserByNameAndJob,
+  deleteUser,
 };
